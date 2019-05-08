@@ -18,6 +18,7 @@ import ru.tinkoff.news.R
 import ru.tinkoff.news.getHttpContent
 import ru.tinkoff.news.model.NewsItemDetails
 import ru.tinkoff.news.mvp.AndroidXMvpAppCompatActivity
+import java.util.Locale
 
 class NewsItemDetailsActivity : AndroidXMvpAppCompatActivity(), NewsItemDetailsView {
 
@@ -80,6 +81,7 @@ class NewsItemDetailsActivity : AndroidXMvpAppCompatActivity(), NewsItemDetailsV
         content.movementMethod = LinkMovementMethod.getInstance()
         titleTextView.text = details.title.title
         content.text = details.getHttpContent()
+        textDate.text = details.title.publicationDate.toString(DATE_FORMAT, Locale.getDefault())
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -112,6 +114,7 @@ class NewsItemDetailsActivity : AndroidXMvpAppCompatActivity(), NewsItemDetailsV
     companion object {
         private const val EXTRA_NEWS_ID = "news_id"
         private const val EXTRA_TRANSITION_NAME = "transition_name"
+        private const val DATE_FORMAT = "HH:mm, dd MMMMM yyyy"
 
         fun createIntent(context: Context, newsId: String, transitionName: String): Intent {
             return Intent(context, NewsItemDetailsActivity::class.java)

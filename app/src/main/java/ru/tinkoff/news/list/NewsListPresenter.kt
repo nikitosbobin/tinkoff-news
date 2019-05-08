@@ -64,6 +64,6 @@ class NewsListPresenter @Inject constructor(
     }
 
     companion object {
-        private const val DATE_FORMAT = "dd MMM, yyyy"
+        private const val DATE_FORMAT = "dd MMMMM, yyyy"
     }
 }

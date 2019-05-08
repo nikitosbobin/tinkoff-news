@@ -48,6 +48,17 @@
                 android:background="@color/strokeGrey" />
 
             <TextView
+                android:id="@+id/textDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:paddingRight="16dp"
+                android:textColor="@color/textLight"
+                android:textSize="16sp"
+                tools:text="@tools:sample/date/ddmmyy"/>
+
+            <TextView
                 android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
