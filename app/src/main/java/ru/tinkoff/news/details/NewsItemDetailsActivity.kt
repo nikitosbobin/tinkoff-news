@@ -18,7 +18,6 @@ import ru.tinkoff.news.R
 import ru.tinkoff.news.getHttpContent
 import ru.tinkoff.news.model.NewsItemDetails
 import ru.tinkoff.news.mvp.AndroidXMvpAppCompatActivity
-import timber.log.Timber
 
 class NewsItemDetailsActivity : AndroidXMvpAppCompatActivity(), NewsItemDetailsView {
 
