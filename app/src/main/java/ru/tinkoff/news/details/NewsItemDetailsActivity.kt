@@ -2,13 +2,11 @@ package ru.tinkoff.news.details
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.Menu
 import android.view.MenuItem
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
@@ -24,12 +22,6 @@ import java.util.*
 class NewsItemDetailsActivity : AndroidXMvpAppCompatActivity(), NewsItemDetailsView {
 
     private var isInFavourite = false
-    private val favouriteIcon: Drawable by lazy {
-        ContextCompat.getDrawable(this@NewsItemDetailsActivity, R.drawable.ic_favorite)!!
-    }
-    private val nonFavouriteIcon: Drawable by lazy {
-        ContextCompat.getDrawable(this@NewsItemDetailsActivity, R.drawable.ic_favorite_border)!!
-    }
 
     @InjectPresenter
     lateinit var presenter: NewsItemDetailsPresenter
@@ -70,7 +62,8 @@ class NewsItemDetailsActivity : AndroidXMvpAppCompatActivity(), NewsItemDetailsV
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         menu.findItem(R.id.item_fav)?.apply {
-            icon = if (isInFavourite) favouriteIcon else nonFavouriteIcon
+            val iconRes = if (isInFavourite) R.drawable.ic_remove_favourite else R.drawable.ic_add_favourite
+            setIcon(iconRes)
         }
         return super.onPrepareOptionsMenu(menu)
     }
