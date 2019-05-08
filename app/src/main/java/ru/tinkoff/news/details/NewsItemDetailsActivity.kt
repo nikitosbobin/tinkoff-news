@@ -56,6 +56,8 @@ class NewsItemDetailsActivity : AndroidXMvpAppCompatActivity(), NewsItemDetailsV
             }
         }
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         presenter.loadDetails(intent.getStringExtra(EXTRA_NEWS_ID)!!)
     }
 
@@ -86,6 +88,10 @@ class NewsItemDetailsActivity : AndroidXMvpAppCompatActivity(), NewsItemDetailsV
                 isInFavourite = !isInFavourite
                 presenter.changeFavouriteState(isInFavourite)
                 invalidateOptionsMenu()
+                true
+            }
+            android.R.id.home -> {
+                onBackPressed()
                 true
             }
             else -> super.onOptionsItemSelected(item)
