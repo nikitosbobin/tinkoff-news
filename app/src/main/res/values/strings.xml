@@ -2,6 +2,8 @@
     <string name="app_name">Tinkoff news</string>
     <string name="news_details_title">Новость</string>
     <string name="add_to_favourite">Добавить в избранное</string>
+    <string name="added_to_favourite">Новость добавлена в избранное</string>
+    <string name="removed_from_favourite">Новость удалена из избранного</string>
     <string name="news">Новости</string>
     <string name="favourites">Избранное</string>
 </resources>
