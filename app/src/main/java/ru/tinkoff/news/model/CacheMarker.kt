@@ -9,10 +9,8 @@ data class CacheMarker(
 
     @PrimaryKey
     @ColumnInfo(name = "cacheKey")
-    var cacheKey: String,
+    val cacheKey: String,
 
     @ColumnInfo(name = "timestamp")
-    var timestamp: Long
-) {
-    constructor() : this("", 0L)
-}
+    val timestamp: Long
+)
