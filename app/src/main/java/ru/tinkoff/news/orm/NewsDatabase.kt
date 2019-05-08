@@ -16,7 +16,8 @@ import ru.tinkoff.news.model.NewsItemTitle
         CacheMarker::class,
         FavouriteMarker::class
     ],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 abstract class NewsDatabase : RoomDatabase() {
     abstract fun newsDetailsDao(): NewsDetailsDao
