@@ -57,7 +57,7 @@
                 android:textColor="@color/textDark"
                 android:textIsSelectable="true"
                 android:textSize="16sp"
-                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum maximus libero, vitae scelerisque leo porta at. Sed suscipit nulla id ultricies rhoncus. Quisque vel maximus tortor. Fusce euismod vestibulum quam sed tincidunt. Phasellus euismod fermentum lectus, in eleifend nibh. Fusce neque sapien, porttitor eget eros non, tempor commodo enim. Proin dictum mi vel felis aliquam fermentum ac vestibulum sem. Sed sit amet sem et elit elementum posuere in in velit. Donec hendrerit orci quis turpis efficitur, facilisis pharetra ex faucibus. Nulla tempus tincidunt libero, sit amet imperdiet sem ultrices in. Praesent interdum ante quis velit cursus posuere. Curabitur at risus felis. Pellentesque euismod ligula vel commodo dignissim.Pellentesque euismod ligula vel commodo dignissim.Pellentesque euismod ligula vel commodo dignissim.Pellentesque euismod ligula vel commodo dignissim.Pellentesque euismod ligula vel commodo dignissim.Pellentesque euismod ligula vel commodo dignissim.Pellentesque euismod ligula vel commodo dignissim.Pellentesque euismod ligula vel commodo dignissim.Pellentesque euismod ligula vel commodo dignissim." />
+                tools:text="@tools:sample/lorem/random" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -66,7 +66,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="32dp"
-        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_arrow_upward" />
