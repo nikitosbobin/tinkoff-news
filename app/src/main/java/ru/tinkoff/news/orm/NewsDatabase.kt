@@ -7,6 +7,10 @@ import ru.tinkoff.news.model.CacheMarker
 import ru.tinkoff.news.model.FavouriteMarker
 import ru.tinkoff.news.model.NewsItemDetails
 import ru.tinkoff.news.model.NewsItemTitle
+import ru.tinkoff.news.orm.dao.CacheMarkerDao
+import ru.tinkoff.news.orm.dao.FavouriteMarkerDao
+import ru.tinkoff.news.orm.dao.NewsDetailsDao
+import ru.tinkoff.news.orm.dao.NewsTitlesDao
 
 @TypeConverters(Converters::class)
 @Database(

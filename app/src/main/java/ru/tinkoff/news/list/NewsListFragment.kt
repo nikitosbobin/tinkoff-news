@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
@@ -47,7 +49,7 @@ class NewsListFragment : AndroidXMvpAppCompatFragment(), NewsListView {
             }
 
             startActivity(
-                NewsItemDetailsActivity.createIntent(requireContext(), newsItem.id, transitionName),
+                NewsItemDetailsActivity.createIntent(requireContext(), newsItem.id, newsItem.title, transitionName),
                 activityOptions?.toBundle()
             )
         }
@@ -55,6 +57,11 @@ class NewsListFragment : AndroidXMvpAppCompatFragment(), NewsListView {
         newsList.adapter = adapter
 
         refreshLayout.isEnabled = !isFavourite
+        refreshLayout.setColorSchemeColors(
+            ContextCompat.getColor(requireContext(), R.color.colorPrimary),
+            ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark),
+            ContextCompat.getColor(requireContext(), R.color.colorAccent)
+        )
         refreshLayout.setOnRefreshListener {
             presenter.loadNews(true)
         }
@@ -62,7 +69,15 @@ class NewsListFragment : AndroidXMvpAppCompatFragment(), NewsListView {
 
     override fun showNews(news: List<ListItem>) {
         adapter.items = news
-        adapter.notifyDataSetChanged()
+
+        if (news.isEmpty()) {
+            showEmptyPlaceholder()
+        } else {
+            emptyPlaceholder.isVisible = false
+            newsList.isVisible = true
+
+            adapter.notifyDataSetChanged()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -70,6 +85,7 @@ class NewsListFragment : AndroidXMvpAppCompatFragment(), NewsListView {
         if (isFavourite) {
             presenter.loadFavouriteNews()
         } else {
+            presenter.subscribeToNetworkChanges()
             presenter.loadNews(false)
         }
     }
@@ -79,7 +95,27 @@ class NewsListFragment : AndroidXMvpAppCompatFragment(), NewsListView {
     }
 
     override fun onError(error: Throwable) {
-        Snackbar.make(refreshLayout, error.message.orEmpty(), Snackbar.LENGTH_LONG).show()
+        if (adapter.itemCount == 0) {
+            showEmptyPlaceholder()
+        }
+        Snackbar.make(refreshLayout, R.string.internal_error, Snackbar.LENGTH_LONG).show()
+    }
+
+    override fun onInternetStateChanged(connected: Boolean) {
+        refreshLayout.isEnabled = !isFavourite && connected
+        if (connected) {
+            Snackbar.make(refreshLayout, R.string.yes_internet, Snackbar.LENGTH_SHORT).show()
+        } else {
+            Snackbar.make(refreshLayout, R.string.no_internet, Snackbar.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showEmptyPlaceholder() {
+        emptyPlaceholder.isVisible = true
+        newsList.isVisible = false
+
+        val textRes = if (isFavourite) R.string.no_favourites else R.string.no_news
+        emptyPlaceholderText.setText(textRes)
     }
 
     companion object {

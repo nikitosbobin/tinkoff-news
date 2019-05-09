@@ -8,4 +8,6 @@ interface NewsListView : MvpView {
     fun showLoading(show: Boolean)
 
     fun onError(error: Throwable)
+
+    fun onInternetStateChanged(connected: Boolean)
 }

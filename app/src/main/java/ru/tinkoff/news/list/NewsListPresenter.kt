@@ -1,22 +1,35 @@
 package ru.tinkoff.news.list
 
 import com.arellomobile.mvp.InjectViewState
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.rxkotlin.toObservable
-import ru.tinkoff.news.api.NewsService
 import ru.tinkoff.news.async
 import ru.tinkoff.news.model.NewsItemTitle
 import ru.tinkoff.news.mvp.BasePresenter
-import ru.tinkoff.news.sortedBy
+import ru.tinkoff.news.network.NetworkStateListener
 import ru.tinkoff.news.sortedByDescending
 import ru.tinkoff.news.storage.NewsTitlesRepository
 import javax.inject.Inject
 
 @InjectViewState
 class NewsListPresenter @Inject constructor(
-    private val newsTitlesRepository: NewsTitlesRepository
+    private val newsTitlesRepository: NewsTitlesRepository,
+    private val networkStateListener: NetworkStateListener
 ) : BasePresenter<NewsListView>() {
+
+    private var previousInternetState = true
+
+    fun subscribeToNetworkChanges() {
+        networkStateListener.observeNetworkState()
+            .filter { it != previousInternetState }
+            .doOnNext {
+                previousInternetState = it
+            }
+            .subscribe { connected ->
+                viewState.onInternetStateChanged(connected)
+            }
+            .keep()
+    }
 
     fun loadFavouriteNews() {
         viewState.showLoading(true)

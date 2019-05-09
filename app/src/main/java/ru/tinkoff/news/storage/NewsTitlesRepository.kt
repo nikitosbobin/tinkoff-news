@@ -6,20 +6,17 @@ import org.joda.time.Duration
 import ru.tinkoff.news.api.NewsService
 import ru.tinkoff.news.model.FavouriteMarker
 import ru.tinkoff.news.model.NewsItemTitle
-import ru.tinkoff.news.orm.FavouriteMarkerDao
+import ru.tinkoff.news.orm.dao.FavouriteMarkerDao
 import ru.tinkoff.news.orm.NewsDatabase
-import ru.tinkoff.news.orm.NewsTitlesDao
+import ru.tinkoff.news.orm.dao.NewsTitlesDao
 import javax.inject.Inject
-import kotlin.reflect.full.createType
 
 class NewsTitlesRepository @Inject constructor(
     database: NewsDatabase,
     private val newsService: NewsService
-) : BaseRepository<NewsTitlesDao>(database, NewsTitlesDao::class.createType()) {
+) : BaseRepository<NewsTitlesDao>(database) {
 
-    private val favouriteMarkerDao: FavouriteMarkerDao by lazy {
-        getDaoOfType<FavouriteMarkerDao>(FavouriteMarkerDao::class.createType())
-    }
+    private val favouriteMarkerDao: FavouriteMarkerDao by lazy { database.favouriteMarkerDao() }
 
     fun isFavourite(newsId: String): Single<Boolean> {
         return favouriteMarkerDao.contains(newsId)
@@ -61,6 +58,8 @@ class NewsTitlesRepository @Inject constructor(
             .switchIfEmpty(getAllNewsFromServer())
             .onErrorResumeNext(getAllNewsFromDb().toSingle())
     }
+
+    override fun getDatabaseAccessObject(database: NewsDatabase): NewsTitlesDao = database.newsTitlesDao()
 
     override val cacheDuration: Duration = Duration.standardDays(1)
 

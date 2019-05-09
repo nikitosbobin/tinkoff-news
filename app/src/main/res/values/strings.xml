@@ -6,4 +6,9 @@
     <string name="removed_from_favourite">Новость удалена из избранного</string>
     <string name="news">Новости</string>
     <string name="favourites">Избранное</string>
+    <string name="no_favourites">Нет избранных новостей</string>
+    <string name="no_news">Новости еще не загружены</string>
+    <string name="internal_error">Произошла ошибка</string>
+    <string name="no_internet">Отсутствует соединение с интернетом</string>
+    <string name="yes_internet">Соединение восстановлено</string>
 </resources>

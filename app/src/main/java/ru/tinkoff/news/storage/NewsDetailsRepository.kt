@@ -6,15 +6,14 @@ import org.joda.time.Duration
 import ru.tinkoff.news.api.NewsService
 import ru.tinkoff.news.model.NewsItemDetails
 import ru.tinkoff.news.orm.NewsDatabase
-import ru.tinkoff.news.orm.NewsDetailsDao
-import ru.tinkoff.news.orm.insert
+import ru.tinkoff.news.orm.dao.NewsDetailsDao
+import ru.tinkoff.news.orm.dao.insert
 import javax.inject.Inject
-import kotlin.reflect.full.createType
 
 class NewsDetailsRepository @Inject constructor(
     database: NewsDatabase,
     private val newsService: NewsService
-) : BaseRepository<NewsDetailsDao>(database, NewsDetailsDao::class.createType()) {
+) : BaseRepository<NewsDetailsDao>(database) {
 
     fun getDetails(id: String): Single<NewsItemDetails> {
         return isCacheActualAsync()
@@ -23,6 +22,8 @@ class NewsDetailsRepository @Inject constructor(
             .switchIfEmpty(getDetailsFromServer(id))
             .onErrorResumeNext(getDetailsFromDb(id).toSingle())
     }
+
+    override fun getDatabaseAccessObject(database: NewsDatabase): NewsDetailsDao = database.newsDetailsDao()
 
     override val cacheDuration: Duration = Duration.standardDays(1)
 
@@ -37,7 +38,5 @@ class NewsDetailsRepository @Inject constructor(
             }
     }
 
-    private fun getDetailsFromDb(id: String): Maybe<NewsItemDetails> {
-        return dao.getById(id)
-    }
+    private fun getDetailsFromDb(id: String): Maybe<NewsItemDetails> = dao.getById(id)
 }

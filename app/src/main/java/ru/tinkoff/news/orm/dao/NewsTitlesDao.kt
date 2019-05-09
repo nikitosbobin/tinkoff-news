@@ -1,4 +1,4 @@
-package ru.tinkoff.news.orm
+package ru.tinkoff.news.orm.dao
 
 import androidx.room.*
 import io.reactivex.Flowable

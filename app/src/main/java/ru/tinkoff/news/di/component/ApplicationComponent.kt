@@ -12,7 +12,7 @@ import javax.inject.Singleton
 interface ApplicationComponent {
     fun inject(activity: MainActivity)
 
-    fun getNewsListPresenter() : NewsListPresenter
+    fun getNewsListPresenter(): NewsListPresenter
 
     fun getNewsItemDetailsPresenter(): NewsItemDetailsPresenter
 }

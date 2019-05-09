@@ -1,6 +1,7 @@
 package ru.tinkoff.news.di.module
 
 import android.content.Context
+import android.net.ConnectivityManager
 import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -41,5 +42,11 @@ class ApplicationModule(private val context: Context) {
     fun provideDatabase(context: Context): NewsDatabase {
         return Room.databaseBuilder(context, NewsDatabase::class.java, "news.db")
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideConnectivityManager(context: Context): ConnectivityManager {
+        return context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 }

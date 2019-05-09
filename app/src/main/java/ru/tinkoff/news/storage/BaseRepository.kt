@@ -4,24 +4,11 @@ import io.reactivex.Single
 import org.joda.time.Duration
 import ru.tinkoff.news.model.CacheMarker
 import ru.tinkoff.news.orm.NewsDatabase
-import kotlin.reflect.KType
-import kotlin.reflect.full.functions
 
-abstract class BaseRepository<Dao>(
-    private val database: NewsDatabase,
-    private val daoType: KType
-) {
-    @Suppress("UNCHECKED_CAST")
-    protected val dao: Dao by lazy { getDaoOfType(daoType) as Dao }
+abstract class BaseRepository<Dao>(private val database: NewsDatabase) {
+    protected val dao: Dao by lazy { getDatabaseAccessObject(database) }
 
-    protected fun <DaoType> getDaoOfType(daoType: KType): DaoType {
-        val daoGetter = NewsDatabase::class.functions
-            .filter { it.isAbstract }
-            .first { it.returnType == daoType }
-
-        @Suppress("UNCHECKED_CAST")
-        return daoGetter.call(database) as DaoType
-    }
+    protected abstract fun getDatabaseAccessObject(database: NewsDatabase): Dao
 
     protected fun updateCacheTimestamp(keys: List<String>) {
         val markers = keys

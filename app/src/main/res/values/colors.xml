@@ -5,6 +5,8 @@
     <color name="colorAccent">#7c4dff</color>
 
     <color name="textDark">#333333</color>
-    <color name="textLight">#aaa</color>
+    <color name="textLight">@color/greyLight</color>
     <color name="strokeGrey">#dadce0</color>
+
+    <color name="greyLight">#aaa</color>
 </resources>

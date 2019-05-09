@@ -33,6 +33,7 @@ class NewsItemDetailsActivity : AndroidXMvpAppCompatActivity(), NewsItemDetailsV
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news_item_details)
 
+        titleTextView.text = intent.getStringExtra(EXTRA_NEWS_ITEM_TITLE)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             titleTextView.transitionName = intent.getStringExtra(EXTRA_TRANSITION_NAME)
             startPostponedEnterTransition()
@@ -110,17 +111,20 @@ class NewsItemDetailsActivity : AndroidXMvpAppCompatActivity(), NewsItemDetailsV
     }
 
     override fun onError(error: Throwable) {
+        Snackbar.make(floatingActionButton, R.string.internal_error, Snackbar.LENGTH_LONG).show()
     }
 
     companion object {
         private const val EXTRA_NEWS_ID = "news_id"
         private const val EXTRA_TRANSITION_NAME = "transition_name"
+        private const val EXTRA_NEWS_ITEM_TITLE = "news_item_title"
         private const val DATE_FORMAT = "HH:mm, dd MMMMM yyyy"
 
-        fun createIntent(context: Context, newsId: String, transitionName: String): Intent {
+        fun createIntent(context: Context, newsId: String, newsItemTitle: String, transitionName: String): Intent {
             return Intent(context, NewsItemDetailsActivity::class.java)
                 .putExtra(EXTRA_NEWS_ID, newsId)
                 .putExtra(EXTRA_TRANSITION_NAME, transitionName)
+                .putExtra(EXTRA_NEWS_ITEM_TITLE, newsItemTitle)
         }
     }
 }
