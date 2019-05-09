@@ -12,11 +12,9 @@ data class NewsItemDetails(
     @PrimaryKey
     @Embedded
     @SerializedName("title")
-    var title: NewsItemTitle,
+    val title: NewsItemTitle,
 
     @ColumnInfo(name = "content")
     @SerializedName("content")
-    var content: String
-) : Serializable {
-    constructor() : this(NewsItemTitle(), "")
-}
+    val content: String
+) : Serializable

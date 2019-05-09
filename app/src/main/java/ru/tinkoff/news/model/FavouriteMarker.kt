@@ -8,7 +8,5 @@ import androidx.room.PrimaryKey
 data class FavouriteMarker(
     @PrimaryKey
     @ColumnInfo(name = "newsId")
-    var newsId: String
-) {
-    constructor() : this("")
-}
+    val newsId: String
+)

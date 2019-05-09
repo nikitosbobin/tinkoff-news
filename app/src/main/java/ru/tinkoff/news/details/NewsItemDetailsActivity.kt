@@ -2,33 +2,26 @@ package ru.tinkoff.news.details
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.Menu
 import android.view.MenuItem
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_news_item_details.*
 import ru.tinkoff.news.NewsApplication
 import ru.tinkoff.news.R
 import ru.tinkoff.news.getHttpContent
 import ru.tinkoff.news.model.NewsItemDetails
 import ru.tinkoff.news.mvp.AndroidXMvpAppCompatActivity
-import timber.log.Timber
+import java.util.*
 
 class NewsItemDetailsActivity : AndroidXMvpAppCompatActivity(), NewsItemDetailsView {
 
     private var isInFavourite = false
-    private val favouriteIcon: Drawable by lazy {
-        ContextCompat.getDrawable(this@NewsItemDetailsActivity, R.drawable.ic_favorite)!!
-    }
-    private val nonFavouriteIcon: Drawable by lazy {
-        ContextCompat.getDrawable(this@NewsItemDetailsActivity, R.drawable.ic_favorite_border)!!
-    }
 
     @InjectPresenter
     lateinit var presenter: NewsItemDetailsPresenter
@@ -57,6 +50,8 @@ class NewsItemDetailsActivity : AndroidXMvpAppCompatActivity(), NewsItemDetailsV
             }
         }
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         presenter.loadDetails(intent.getStringExtra(EXTRA_NEWS_ID)!!)
     }
 
@@ -67,7 +62,8 @@ class NewsItemDetailsActivity : AndroidXMvpAppCompatActivity(), NewsItemDetailsV
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         menu.findItem(R.id.item_fav)?.apply {
-            icon = if (isInFavourite) favouriteIcon else nonFavouriteIcon
+            val iconRes = if (isInFavourite) R.drawable.ic_remove_favourite else R.drawable.ic_add_favourite
+            setIcon(iconRes)
         }
         return super.onPrepareOptionsMenu(menu)
     }
@@ -79,6 +75,7 @@ class NewsItemDetailsActivity : AndroidXMvpAppCompatActivity(), NewsItemDetailsV
         content.movementMethod = LinkMovementMethod.getInstance()
         titleTextView.text = details.title.title
         content.text = details.getHttpContent()
+        textDate.text = details.title.publicationDate.toString(DATE_FORMAT, Locale.getDefault())
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -87,6 +84,17 @@ class NewsItemDetailsActivity : AndroidXMvpAppCompatActivity(), NewsItemDetailsV
                 isInFavourite = !isInFavourite
                 presenter.changeFavouriteState(isInFavourite)
                 invalidateOptionsMenu()
+
+                val message: Int = if (isInFavourite) {
+                    R.string.added_to_favourite
+                } else {
+                    R.string.removed_from_favourite
+                }
+                Snackbar.make(scrollView, message, Snackbar.LENGTH_SHORT).show()
+                true
+            }
+            android.R.id.home -> {
+                onBackPressed()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -107,6 +115,7 @@ class NewsItemDetailsActivity : AndroidXMvpAppCompatActivity(), NewsItemDetailsV
     companion object {
         private const val EXTRA_NEWS_ID = "news_id"
         private const val EXTRA_TRANSITION_NAME = "transition_name"
+        private const val DATE_FORMAT = "HH:mm, dd MMMMM yyyy"
 
         fun createIntent(context: Context, newsId: String, transitionName: String): Intent {
             return Intent(context, NewsItemDetailsActivity::class.java)

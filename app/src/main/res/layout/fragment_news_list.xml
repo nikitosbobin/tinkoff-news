@@ -8,5 +8,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/newsList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="#fff"
+        android:overScrollMode="ifContentScrolls"/>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
